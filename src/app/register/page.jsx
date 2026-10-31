@@ -1,23 +1,14 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
-import {
-  FiUser,
-  FiMail,
-  FiLock,
-  FiImage,
-  FiArrowRight,
-} from "react-icons/fi";
-import { FcGoogle } from "react-icons/fc";
+import { FaGoogle } from "react-icons/fa";
 
 export default function RegisterPage() {
   const router = useRouter();
-
-  const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -26,6 +17,9 @@ export default function RegisterPage() {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -33,20 +27,20 @@ export default function RegisterPage() {
     });
   };
 
-  
+  // Email and Password Registration
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    if (!form.name.trim() || !form.email.trim() || !form.password) {
+      return toast.error("Please fill in all required fields");
+    }
+
     if (!/[A-Z]/.test(form.password)) {
-      return toast.error(
-        "Password must contain at least one uppercase letter"
-      );
+      return toast.error("Password must contain an uppercase letter");
     }
 
     if (!/[a-z]/.test(form.password)) {
-      return toast.error(
-        "Password must contain at least one lowercase letter"
-      );
+      return toast.error("Password must contain a lowercase letter");
     }
 
     if (form.password.length < 6) {
@@ -61,31 +55,31 @@ export default function RegisterPage() {
         email: form.email.trim(),
         password: form.password,
         image: form.image.trim() || undefined,
-        callbackURL: "/",
+        callbackURL: "http://localhost:3000/login",
       });
 
       if (error) {
         throw new Error(error.message || "Registration failed");
       }
 
-      toast.success("Account created successfully!");
-      router.push("/");
-      router.refresh();
+      toast.success("Registration successful! Please login.");
+
+      router.push("/login");
     } catch (error) {
-      toast.error(error.message || "Something went wrong");
+      toast.error(error.message || "Registration failed");
     } finally {
       setLoading(false);
     }
   };
 
- 
+  // Google Registration
   const handleGoogleRegister = async () => {
     try {
       setGoogleLoading(true);
 
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: "http://localhost:3000/login",
       });
 
       if (error) {
@@ -98,204 +92,122 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="flex min-h-[85vh] items-center justify-center bg-base-200 px-4 py-12">
-      <div className="grid w-full max-w-5xl overflow-hidden rounded-2xl bg-base-100 shadow-xl lg:grid-cols-2">
+    <main className="min-h-screen bg-base-200 flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md bg-base-100 shadow-xl rounded-2xl p-6 sm:p-8">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-primary">
+            Create Account
+          </h1>
 
-        {/* Left Side */}
-        <div className="hidden flex-col justify-between bg-gradient-to-br from-purple-950 via-purple-800 to-indigo-900 p-10 text-white lg:flex">
-          <div>
-            <h2 className="text-3xl font-extrabold">
-              Studio<span className="text-purple-300">Space</span>
-            </h2>
-
-            <p className="mt-3 text-purple-200">
-              Find Your Creative Space
-            </p>
-          </div>
-
-          <div>
-            <h1 className="text-4xl font-bold leading-tight">
-              Create.
-              <br />
-              Collaborate.
-              <br />
-              Inspire.
-            </h1>
-
-            <p className="mt-5 max-w-sm text-purple-200">
-              Join a community of creators and discover the perfect
-              space to bring your creative ideas to life.
-            </p>
-          </div>
-
-          <p className="text-sm text-purple-300">
-            © 2026 StudioSpace. All rights reserved.
+          <p className="text-base-content/60 mt-2">
+            Join StudioSpace and explore creative spaces.
           </p>
         </div>
 
-        {/* Register Form */}
-        <div className="p-6 sm:p-10">
-          <div className="mx-auto max-w-md">
+        {/* Google Registration */}
+        <button
+          type="button"
+          onClick={handleGoogleRegister}
+          disabled={googleLoading || loading}
+          className="btn btn-outline w-full mb-6"
+        >
+          <FaGoogle />
 
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold">
-                Create Account
-              </h1>
+          {googleLoading
+            ? "Connecting to Google..."
+            : "Continue with Google"}
+        </button>
 
-              <p className="mt-2 text-base-content/60">
-                Get started with StudioSpace today.
-              </p>
-            </div>
+        <div className="divider">OR REGISTER WITH EMAIL</div>
 
-            {/* Google Button */}
-            <button
-              type="button"
-              onClick={handleGoogleRegister}
-              disabled={googleLoading || loading}
-              className="btn btn-outline flex w-full items-center gap-3"
-            >
-              <FcGoogle size={21} />
+        {/* Email Registration */}
+        <form onSubmit={handleRegister} className="space-y-4">
+          <div>
+            <label className="label">
+              <span className="label-text font-medium">Full Name *</span>
+            </label>
 
-              {googleLoading
-                ? "Connecting to Google..."
-                : "Continue with Google"}
-            </button>
-
-            {/* Divider */}
-            <div className="divider my-6">OR REGISTER WITH EMAIL</div>
-
-            <form onSubmit={handleRegister} className="space-y-4">
-
-              {/* Full Name */}
-              <div>
-                <label className="mb-2 block text-sm font-semibold">
-                  Full Name
-                </label>
-
-                <div className="relative">
-                  <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/50" />
-
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Enter your full name"
-                    className="input input-bordered w-full pl-10"
-                    value={form.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="mb-2 block text-sm font-semibold">
-                  Email Address
-                </label>
-
-                <div className="relative">
-                  <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/50" />
-
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Enter your email"
-                    className="input input-bordered w-full pl-10"
-                    value={form.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Profile Image */}
-              <div>
-                <label className="mb-2 block text-sm font-semibold">
-                  Profile Photo URL
-                  <span className="ml-1 font-normal text-base-content/50">
-                    (Optional)
-                  </span>
-                </label>
-
-                <div className="relative">
-                  <FiImage className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/50" />
-
-                  <input
-                    type="url"
-                    name="image"
-                    placeholder="https://example.com/photo.jpg"
-                    className="input input-bordered w-full pl-10"
-                    value={form.image}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-
-              {/* Password */}
-              <div>
-                <label className="mb-2 block text-sm font-semibold">
-                  Password
-                </label>
-
-                <div className="relative">
-                  <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/50" />
-
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Create a password"
-                    className="input input-bordered w-full pl-10"
-                    value={form.password}
-                    onChange={handleChange}
-                    minLength={6}
-                    required
-                  />
-                </div>
-
-                <p className="mt-2 text-xs text-base-content/50">
-                  Must contain uppercase, lowercase and at least 6 characters.
-                </p>
-              </div>
-
-              {/* Submit */}
-              <button
-                type="submit"
-                disabled={loading || googleLoading}
-                className="btn w-full border-none bg-purple-600 text-white hover:bg-purple-700"
-              >
-                {loading ? (
-                  <>
-                    <span className="loading loading-spinner loading-sm" />
-                    Creating Account...
-                  </>
-                ) : (
-                  <>
-                    Create Account
-                    <FiArrowRight />
-                  </>
-                )}
-              </button>
-            </form>
-
-            {/* Login Link */}
-            <p className="mt-6 text-center text-sm text-base-content/70">
-              Already have an account?{" "}
-              <Link
-                href="/login"
-                className="font-bold text-purple-600 hover:underline"
-              >
-                Login
-              </Link>
-            </p>
-
-            <p className="mt-6 text-center text-xs text-base-content/50">
-              By creating an account, you agree to our Terms of Service
-              and Privacy Policy.
-            </p>
-
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter your full name"
+              value={form.name}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
           </div>
-        </div>
+
+          <div>
+            <label className="label">
+              <span className="label-text font-medium">Email *</span>
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={form.email}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="label">
+              <span className="label-text font-medium">
+                Profile Photo URL (Optional)
+              </span>
+            </label>
+
+            <input
+              type="url"
+              name="image"
+              placeholder="https://example.com/photo.jpg"
+              value={form.image}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+          </div>
+
+          <div>
+            <label className="label">
+              <span className="label-text font-medium">Password *</span>
+            </label>
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Create a password"
+              value={form.password}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+              required
+            />
+
+            <p className="text-xs text-base-content/50 mt-2">
+              Minimum 6 characters, including uppercase and lowercase letters.
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading || googleLoading}
+            className="btn btn-primary w-full"
+          >
+            {loading ? "Creating Account..." : "Create Account"}
+          </button>
+        </form>
+
+        <p className="text-center text-sm mt-6 text-base-content/70">
+          Already have an account?{" "}
+          <Link href="/login" className="text-primary font-semibold hover:underline">
+            Login
+          </Link>
+        </p>
       </div>
     </main>
   );
 }
+
