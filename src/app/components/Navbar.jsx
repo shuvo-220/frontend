@@ -88,7 +88,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile & Tablet Menu */}
+          {/* Mobile */}
           <div className="dropdown dropdown-end lg:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}

@@ -1,9 +1,9 @@
+import Hero from "./components/home/Hero";
+
 export default function Home() {
   return (
-    <main className="min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-primary">
-        Welcome to StudioSpace
-      </h1>
+    <main>
+      <Hero />
     </main>
   );
 }
