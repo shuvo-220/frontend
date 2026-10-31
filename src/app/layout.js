@@ -1,5 +1,6 @@
 
 import Navbar from "./components/Navbar";
+import Footer from "./components/shared/Footer";
 import "./globals.css";
 
 export const metadata = {
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen">
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
