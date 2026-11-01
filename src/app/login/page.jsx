@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -25,7 +24,6 @@ export default function LoginPage() {
     });
   };
 
-  // Email and Password Login
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -35,7 +33,7 @@ export default function LoginPage() {
       const { error } = await authClient.signIn.email({
         email: form.email.trim(),
         password: form.password,
-        callbackURL: "http://localhost:3000/",
+        callbackURL: `${window.location.origin}/`,
       });
 
       if (error) {
@@ -44,7 +42,7 @@ export default function LoginPage() {
 
       toast.success("Login successful!");
 
-      router.push("/");
+      router.replace("/");
       router.refresh();
     } catch (error) {
       toast.error(error.message || "Invalid email or password");
@@ -60,7 +58,7 @@ export default function LoginPage() {
 
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "http://localhost:3000/",
+        callbackURL: `${window.location.origin}/`,
       });
 
       if (error) {
@@ -166,4 +164,3 @@ export default function LoginPage() {
     </main>
   );
 }
-
