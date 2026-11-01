@@ -1,42 +1,63 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
 
 
 export default function MyBookingsPage() {
+  const router = useRouter();
+
+  const { data: session, isPending } = authClient.useSession();
+
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cancelingId, setCancelingId] = useState(null);
 
-  // Fetch My Bookings
-  const fetchBookings = async () => {
-    try {
-      setLoading(true);
-
-      const response = await fetch('http://localhost:5000/api/my-bookings', {
-        method: "GET",
-        credentials: "include",
-      });
-
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Failed to fetch bookings");
-      }
-
-      setBookings(result.data || []);
-    } catch (error) {
-      toast.error(error.message || "Something went wrong!");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Login Protection
   useEffect(() => {
+    if (!isPending && !session?.user) {
+      router.replace("/login");
+    }
+  }, [isPending, session, router]);
+
+  // Fetch My Bookings
+  useEffect(() => {
+    if (isPending) return;
+
+    if (!session?.user) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchBookings = async () => {
+      try {
+        setLoading(true);
+
+        const response = await fetch(`http://localhost:5000/api/my-bookings`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(
+            result.message || "Failed to fetch bookings"
+          );
+        }
+
+        setBookings(result.data || []);
+      } catch (error) {
+        toast.error(error.message || "Something went wrong!");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchBookings();
-  }, []);
+  }, [isPending, session]);
 
   // Cancel Booking
   const handleCancel = async (bookingId) => {
@@ -59,7 +80,9 @@ export default function MyBookingsPage() {
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        throw new Error(result.message || "Booking cancellation failed");
+        throw new Error(
+          result.message || "Booking cancellation failed"
+        );
       }
 
       toast.success("Booking cancelled successfully!");
@@ -88,14 +111,17 @@ export default function MyBookingsPage() {
     });
   };
 
-  // Loading State
-  if (loading) {
+  // Session Loading
+  if (isPending || loading) {
     return (
       <main className="min-h-screen flex items-center justify-center">
         <span className="loading loading-spinner loading-lg text-primary"></span>
       </main>
     );
   }
+
+  // Prevent unauthorized content rendering
+  if (!session?.user) return null;
 
   return (
     <main className="min-h-screen bg-base-200 px-4 py-12">
@@ -118,20 +144,29 @@ export default function MyBookingsPage() {
 
         {/* Booking Statistics */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+
           <div className="bg-base-100 rounded-2xl p-6 shadow-sm">
-            <p className="text-base-content/60 text-sm">Total Bookings</p>
-            <h2 className="text-3xl font-bold mt-2">{bookings.length}</h2>
+            <p className="text-base-content/60 text-sm">
+              Total Bookings
+            </p>
+            <h2 className="text-3xl font-bold mt-2">
+              {bookings.length}
+            </h2>
           </div>
 
           <div className="bg-base-100 rounded-2xl p-6 shadow-sm">
-            <p className="text-base-content/60 text-sm">Pending</p>
+            <p className="text-base-content/60 text-sm">
+              Pending
+            </p>
             <h2 className="text-3xl font-bold text-warning mt-2">
               {bookings.filter((b) => b.status === "Pending").length}
             </h2>
           </div>
 
           <div className="bg-base-100 rounded-2xl p-6 shadow-sm">
-            <p className="text-base-content/60 text-sm">Confirmed</p>
+            <p className="text-base-content/60 text-sm">
+              Confirmed
+            </p>
             <h2 className="text-3xl font-bold text-success mt-2">
               {bookings.filter((b) => b.status === "Confirmed").length}
             </h2>
@@ -151,10 +186,7 @@ export default function MyBookingsPage() {
               You haven't booked any studios yet.
             </p>
 
-            <a
-              href="/studios"
-              className="btn btn-primary mt-6"
-            >
+            <a href="/studios" className="btn btn-primary mt-6">
               Explore Studios
             </a>
           </div>
