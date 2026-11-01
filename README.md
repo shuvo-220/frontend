@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# StudioSpace – Creative Studio Rental Marketplace
 
-## Getting Started
+StudioSpace is a peer-to-peer creative studio rental marketplace where users can discover, book, and manage creative spaces for photography, filmmaking, podcast recording, music production, and workshops.
 
-First, run the development server:
+The platform allows studio owners to list their spaces and customers to find and book suitable studios through a simple and user-friendly interface.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Key Features
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Authentication
+- User registration and login with email and password.
+- Google OAuth authentication.
+- Password validation with uppercase, lowercase, and minimum 6 characters.
+- Protected routes for authenticated users.
+- User session management with Better Auth.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Studio Management
+- Browse all available creative studios.
+- Search studios and filter by category.
+- View detailed studio information.
+- Add new studio listings.
+- View personal studio listings.
+- Edit and delete studio listings.
+- Studio ownership verification.
 
-## Learn More
+### Booking System
+- Book available creative studios.
+- View personal booking history.
+- Calculate booking costs on the server.
+- Prevent overlapping confirmed bookings.
+- Cancel pending bookings.
+- Verify booking ownership before cancellation.
 
-To learn more about Next.js, take a look at the following resources:
+### User Interface
+- Responsive design for different screen sizes.
+- Light and Dark theme.
+- Hero slider on the homepage.
+- Featured studio section.
+- Studio category section.
+- How It Works section.
+- Why Choose Us section.
+- Toast notifications.
+- Confirmation modal.
+- Custom 404 page.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technology Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Frontend
+- Next.js
+- React
+- JavaScript
+- Tailwind CSS
+- DaisyUI
+- Better Auth React Client
+- Sonner
+- React Icons
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- Better Auth
+- MongoDB Adapter
+- CORS
+- dotenv
