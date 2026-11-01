@@ -4,19 +4,25 @@ import { FiMapPin, FiUsers, FiArrowRight } from "react-icons/fi";
 
 async function getFeaturedStudios() {
   try {
-    const res = await fetch('https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/studios', {
-      cache: "no-store",
-    });
+    const res = await fetch( "https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/studios",
+      { cache: "no-store" }
+    );
 
     if (!res.ok) {
-      throw new Error("Failed to fetch studios");
+      console.error("API Error:", res.status, res.statusText);
+      return [];
     }
 
     const result = await res.json();
 
-    const studios = Array.isArray(result) ? result : result.data || result.studios || [];
+    console.log("Featured Studios API Response:", result);
 
-    return studios.slice(0, 6);
+    if (!result.success || !Array.isArray(result.data)) {
+      console.error("Invalid API response:", result);
+      return [];
+    }
+
+    return result.data.slice(0, 6);
   } catch (error) {
     console.error("Studio fetching error:", error);
     return [];
