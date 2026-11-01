@@ -1,6 +1,6 @@
-
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
+import { ThemeProvider } from "./components/shared/ThemeProvider";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -12,19 +12,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="light">
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen">
-        <Navbar />
-        {children}
-        <Footer />
-
-        {/* Global Toast Notifications */}
-        <Toaster
-          richColors
-          position="top-right"
-          duration={3000}
-          closeButton
-        />
+        <ThemeProvider>
+          <Navbar />
+          {children}
+          <Footer />
+          <Toaster
+            richColors
+            position="top-right"
+            duration={3000}
+            closeButton
+          />
+        </ThemeProvider>
       </body>
     </html>
   );

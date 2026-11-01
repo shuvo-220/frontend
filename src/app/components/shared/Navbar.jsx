@@ -1,12 +1,12 @@
-
 "use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { useTheme } from "./ThemeProvider";
+import { FaSun, FaMoon } from "react-icons/fa";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -23,7 +23,8 @@ const Navbar = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
-  // Get logged-in user session
+  const { theme, toggleTheme, mounted } = useTheme();
+
   const { data: session, isPending } = authClient.useSession();
 
   const user = session?.user;
@@ -31,7 +32,6 @@ const Navbar = () => {
   const userName = user?.name?.trim() || "User";
   const userImage = user?.image;
 
-  // Logout
   const handleLogout = async () => {
     try {
       setLoggingOut(true);
@@ -58,7 +58,6 @@ const Navbar = () => {
     }
   };
 
-  // Active navigation link
   const isActive = (link) => {
     if (link.href === "/") {
       return pathname === "/";
@@ -74,12 +73,10 @@ const Navbar = () => {
     );
   };
 
-  // User Avatar
   const UserAvatar = ({ size = "h-10 w-10" }) => {
     const [imageError, setImageError] = useState(false);
 
-    const firstLetter =
-      userName.charAt(0).toUpperCase() || "U";
+    const firstLetter = userName.charAt(0).toUpperCase() || "U";
 
     return (
       <div
@@ -99,10 +96,23 @@ const Navbar = () => {
     );
   };
 
-  // Profile dropdown links
+  const ThemeButton = ({ onClick }) => (
+    <button
+      onClick={onClick}
+      className="btn btn-ghost btn-circle"
+      aria-label="Toggle theme"
+      title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+    >
+      {theme === "light" ? (
+        <FaMoon className="text-lg" />
+      ) : (
+        <FaSun className="text-lg text-yellow-500" />
+      )}
+    </button>
+  );
+
   const ProfileLinks = ({ onNavigate }) => (
     <>
-
       <li>
         <Link href="/add-studio" onClick={onNavigate}>
           Add New Studio
@@ -158,6 +168,7 @@ const Navbar = () => {
           </Link>
         </div>
 
+        {/* Desktop Navigation */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal gap-1 px-1">
             {navLinks.map((link) => (
@@ -177,7 +188,15 @@ const Navbar = () => {
           </ul>
         </div>
 
+        {/* Right Section */}
         <div className="navbar-end gap-2">
+
+          {/* Desktop Theme Toggle */}
+          {mounted && (
+            <div className="hidden lg:block">
+              <ThemeButton onClick={toggleTheme} />
+            </div>
+          )}
 
           {!isPending && (
             <>
@@ -239,6 +258,7 @@ const Navbar = () => {
             </>
           )}
 
+          {/* Mobile Menu */}
           <div className="dropdown dropdown-end lg:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -272,6 +292,24 @@ const Navbar = () => {
 
             {menuOpen && (
               <ul className="menu dropdown-content mt-3 w-64 rounded-box bg-base-100 p-3 shadow-xl border border-base-200">
+
+                {/* Mobile Theme Toggle */}
+                {mounted && (
+                  <li>
+                    <button
+                      onClick={toggleTheme}
+                      className="flex items-center gap-3"
+                    >
+                      {theme === "light" ? (
+                        <FaMoon />
+                      ) : (
+                        <FaSun className="text-yellow-500" />
+                      )}
+
+                      {theme === "light" ? "Dark Mode" : "Light Mode"}
+                    </button>
+                  </li>
+                )}
 
                 {user && (
                   <>
