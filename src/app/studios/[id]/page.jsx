@@ -28,7 +28,7 @@ export default function StudioDetailsPage() {
       try {
         setLoading(true);
 
-        const response = await fetch(`https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/studios/${id}`);
+        const response = await fetch(`https://studio-space-backend-oti5.vercel.app/api/studios/${id}`);
 
         if (!response.ok) {
           throw new Error("Studio not found");

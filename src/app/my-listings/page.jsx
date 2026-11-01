@@ -25,7 +25,7 @@ export default function MyListingsPage() {
     try {
       setLoading(true);
 
-      const response = await fetch(`https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/my-listings`, {
+      const response = await fetch(`https://studio-space-backend-oti5.vercel.app/api/my-listings`, {
         method: "GET",
         credentials: "include",
       });

@@ -11,7 +11,7 @@ import {
 } from "react-icons/fi";
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://studio-space-backend-oti5-k75tibq1f.vercel.app/api";
+  process.env.NEXT_PUBLIC_API_URL || "https://studio-space-backend-oti5.vercel.app/api";
 
 const categories = [
   "All Categories",
@@ -31,7 +31,7 @@ export default function StudiosPage() {
   useEffect(() => {
     const fetchStudios = async () => {
       try {
-        const response = await fetch('https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/studios');
+        const response = await fetch('https://studio-space-backend-oti5.vercel.app/api/studios');
 
         if (!response.ok) {
           throw new Error("Failed to fetch studios");

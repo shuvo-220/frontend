@@ -6,7 +6,7 @@ async function getFeaturedStudios() {
   await connection();
 
   try {
-    const res = await fetch("https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/studios",
+    const res = await fetch("https://studio-space-backend-oti5.vercel.app/api/studios",
       {
         cache: "no-store",
       }
