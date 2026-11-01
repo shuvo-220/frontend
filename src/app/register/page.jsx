@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -55,7 +54,7 @@ export default function RegisterPage() {
         email: form.email.trim(),
         password: form.password,
         image: form.image.trim() || undefined,
-        callbackURL: "http://localhost:3000/login",
+        callbackURL: `${window.location.origin}/login`,
       });
 
       if (error) {
@@ -64,7 +63,8 @@ export default function RegisterPage() {
 
       toast.success("Registration successful! Please login.");
 
-      router.push("/login");
+      router.replace("/login");
+      router.refresh();
     } catch (error) {
       toast.error(error.message || "Registration failed");
     } finally {
@@ -79,7 +79,7 @@ export default function RegisterPage() {
 
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "http://localhost:3000/login",
+        callbackURL: `${window.location.origin}/login`,
       });
 
       if (error) {
@@ -202,7 +202,10 @@ export default function RegisterPage() {
 
         <p className="text-center text-sm mt-6 text-base-content/70">
           Already have an account?{" "}
-          <Link href="/login" className="text-primary font-semibold hover:underline">
+          <Link
+            href="/login"
+            className="text-primary font-semibold hover:underline"
+          >
             Login
           </Link>
         </p>
@@ -210,4 +213,3 @@ export default function RegisterPage() {
     </main>
   );
 }
-
