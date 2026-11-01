@@ -35,7 +35,7 @@ export default function BookingPage() {
 
         const fetchStudio = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/studios/${id}`);
+                const response = await fetch(`https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/studios/${id}`);
                 if (!response.ok) throw new Error("Studio not found");
 
                 const result = await response.json();
@@ -98,7 +98,7 @@ export default function BookingPage() {
         try {
             setSubmitting(true);
 
-            const response = await fetch('http://localhost:5000/api/bookings', {
+            const response = await fetch('https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/bookings', {
                 method: "POST",
                 credentials: "include",
                 headers: {

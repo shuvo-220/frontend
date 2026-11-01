@@ -48,7 +48,7 @@ export default function EditStudioPage() {
       try {
         setLoading(true);
 
-        const response = await fetch(`http://localhost:5000/api/studios/${studioId}`,
+        const response = await fetch(`https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/studios/${studioId}`,
           { credentials: "include" }
         );
 
@@ -111,7 +111,7 @@ export default function EditStudioPage() {
         overview: form.overview.trim(),
       };
 
-      const response = await fetch(`http://localhost:5000/api/studios/edit/${studioId}`,
+      const response = await fetch(`https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/studios/edit/${studioId}`,
         {
           method: "PUT",
           headers: {

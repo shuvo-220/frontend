@@ -35,7 +35,7 @@ export default function MyBookingsPage() {
       try {
         setLoading(true);
 
-        const response = await fetch(`http://localhost:5000/api/my-bookings`, {
+        const response = await fetch(`https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/my-bookings`, {
           method: "GET",
           credentials: "include",
         });
@@ -70,7 +70,7 @@ export default function MyBookingsPage() {
     try {
       setCancelingId(bookingId);
 
-      const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}/cancel`,
+      const response = await fetch(`https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/bookings/${bookingId}/cancel`,
         {
           method: "PATCH",
           credentials: "include",

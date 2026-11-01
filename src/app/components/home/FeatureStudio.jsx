@@ -4,7 +4,7 @@ import { FiMapPin, FiUsers, FiArrowRight } from "react-icons/fi";
 
 async function getFeaturedStudios() {
   try {
-    const res = await fetch('http://localhost:5000/api/studios', {
+    const res = await fetch('https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/studios', {
       cache: "no-store",
     });
 

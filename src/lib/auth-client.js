@@ -2,5 +2,5 @@
 import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://studio-space-backend-oti5-k75tibq1f.vercel.app",
 });

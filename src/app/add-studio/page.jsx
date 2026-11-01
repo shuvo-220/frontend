@@ -95,7 +95,7 @@ export default function AddStudioPage() {
     try {
       setLoading(true);
 
-      const response = await fetch(`http://localhost:5000/api/add-listing`, {
+      const response = await fetch(`https://studio-space-backend-oti5-k75tibq1f.vercel.app/api/add-listing`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
