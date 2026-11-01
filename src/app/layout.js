@@ -1,6 +1,7 @@
 
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 export const metadata = {
@@ -16,6 +17,14 @@ export default function RootLayout({ children }) {
         <Navbar />
         {children}
         <Footer />
+
+        {/* Global Toast Notifications */}
+        <Toaster
+          richColors
+          position="top-right"
+          duration={3000}
+          closeButton
+        />
       </body>
     </html>
   );
