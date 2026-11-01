@@ -102,11 +102,6 @@ const Navbar = () => {
   // Profile dropdown links
   const ProfileLinks = ({ onNavigate }) => (
     <>
-      <li>
-        <Link href="/dashboard" onClick={onNavigate}>
-          Dashboard
-        </Link>
-      </li>
 
       <li>
         <Link href="/add-studio" onClick={onNavigate}>
@@ -163,7 +158,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Desktop Navigation */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal gap-1 px-1">
             {navLinks.map((link) => (
@@ -183,7 +177,6 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Desktop Authentication */}
         <div className="navbar-end gap-2">
 
           {!isPending && (
@@ -246,7 +239,6 @@ const Navbar = () => {
             </>
           )}
 
-          {/* Mobile Menu */}
           <div className="dropdown dropdown-end lg:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -281,7 +273,6 @@ const Navbar = () => {
             {menuOpen && (
               <ul className="menu dropdown-content mt-3 w-64 rounded-box bg-base-100 p-3 shadow-xl border border-base-200">
 
-                {/* Mobile User Info */}
                 {user && (
                   <>
                     <li className="menu-title">
@@ -304,7 +295,6 @@ const Navbar = () => {
                   </>
                 )}
 
-                {/* Navigation Links */}
                 {navLinks.map((link) => (
                   <li key={link.href}>
                     <Link
@@ -319,7 +309,6 @@ const Navbar = () => {
 
                 <div className="divider my-1" />
 
-                {/* Mobile Authentication */}
                 {!isPending && (
                   <>
                     {!user ? (
